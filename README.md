@@ -1,1 +1,3 @@
-# ACB-Setup-App
+# Assassin's Creed Brotherhood Setup App
+  
+A program to configure what maps to load with the game and enable fast multiplayer bootup.
