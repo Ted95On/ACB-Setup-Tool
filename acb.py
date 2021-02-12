@@ -1,14 +1,48 @@
 import tkinter as tk
+import gettext
+_ = gettext.gettext
+
+
+"""
+sets tool language -> Meant to be a changeable setting on the tool later on
+en = English (English)
+de = German (Deutsch)
+fr = French (Français)
+pt = Portuguese (Português)
+"""
+
+setLang = "en"
+lang = gettext.translation('base', localedir='locales', languages=[str(setLang)])
+lang.install()
+_ = lang.gettext
+
+#tool.start
+
+def close_window():
+	root.destroy()
 
 root = tk.Tk()
-root.title("Assassin's Creed: Brotherhood Setup Manager Tool")
-root.resizable(False, False)
+root.title(_("Assassin's Creed: Brotherhood Setup Manager Tool"))
+root.minsize(width=800, height=300)
+#root.resizable(False, False)
 
-photo = tk.PhotoImage(file = "images/icon.png")
-root.iconphoto(False, photo)
+logo = tk.PhotoImage(file = "images/icon.png")
+root.iconphoto(False, logo)
 
-canvas = tk.Canvas(root, height=300, width=800, bg="#89b0b3")
-#canvas.pack(fill=tk.BOTH, expand=1)
-canvas.pack()
+main = tk.Frame(root, height=240, relief="solid", bg="#89b0b3", borderwidth=1)
+main.pack(fill=tk.BOTH, expand=1)
+root.geometry("800x300+250+200")
+main.pack()
+
+frame1 = tk.Frame(root, height=1, bg="black", relief="solid")
+frame1.pack(fill=tk.BOTH)
+
+frame2 = tk.Frame(root, height=20, relief="solid", bg="#38393F", borderwidth=1)
+frame2.pack(fill=tk.BOTH, expand=0)
+
+quitIMG = tk.PhotoImage(file = r"images/power.png")
+
+quitB = tk.Button(frame2, image=quitIMG, bg="lightblue", relief="raised", command=lambda: close_window())
+quitB.pack(side="right", padx=5, pady=2)
 
 root.mainloop()
