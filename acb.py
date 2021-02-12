@@ -10,8 +10,15 @@ de = German (Deutsch)
 fr = French (Français)
 pt = Portuguese (Português)
 """
+def printLang():
+	langlist = ["en = English","de = German", "fr = French", "pt = Portuguese"]
+	for x in langlist:
+		print(x)
+	return input("\nSelect a language: ")
 
-setLang = "en"
+setLang = printLang()
+#setLang = "en"
+
 lang = gettext.translation('base', localedir='locales', languages=[str(setLang)])
 lang.install()
 _ = lang.gettext
