@@ -11,10 +11,24 @@ _ = gettext.gettext
 
 version = 0.1
 
-global gamePath
-gamePath = "C:/Program Files (x86)/Steam/steamappS/common/Assassins Creed Brotherhood" #default folder
-pathExist = path.exists(gamePath+"/ACBSP.exe")
-if pathExist == False:
+#global gamePath
+default1 = "C:/Program Files (x86)/Steam/steamapps/common/Assassins Creed Brotherhood"              #default Steam directory
+default2 = "C:/Program Files (x86)/Ubisoft/Ubisoft Game Launcher/games/Assassins Creed Brotherhood" #default UbisoftConnect/Uplay directory			
+
+defaultpathExist = path.exists(default1+"/ACBSP.exe")
+default2pathExist = path.exists(default2+"/ACBSP.exe")
+
+if defaultpathExist:
+	pathExist = True
+	gamePath = default1
+
+elif default2pathExist:
+	pathExist = True
+	gamePath = default2	
+
+else:
+	pathExist = False
+	gamePath = ""
 	print("Can't find directory")
 
 #links
@@ -61,14 +75,17 @@ def readSettings():
 		return "en"
 
 	else:
-		opensettings = open(filename, "r")
-		count = 0
-		for i in opensettings:
-			if count == 1:
-				lang = i.rstrip("\n")
-			count+=1
-		opensettings.close()
-		return lang
+		try:
+			opensettings = open(filename, "r")
+			count = 0
+			for i in opensettings:
+				if count == 1:
+					lang = i.rstrip("\n")
+				count+=1
+			opensettings.close()
+			return lang
+		except:
+			return "en"
 
 
 def replace_line(file_name, line_num, text):
@@ -111,15 +128,10 @@ def openLangMenu():
 		newLang = v.get()
 		if newLang != getLang:
 			replace_line(filename, 1, newLang)
-			answer = messagebox.askyesno("Language modification", "The language has been changed.\nChanges will take effect upon restart.\n\n"
-																						"Do you wish to restart now?")
-			if answer == True:
-				os.startfile("ACBSetupTool.py")
-				root.destroy()
-			else:
-				pass
+			os.startfile("ACBSetupTool.py")
+			root.destroy()
 
-def choosePath():
+def choosePath(): ########################## Manually sets the directory
 
 	ACBpath = askdirectory(title="Select your Assassin's Creed Brotherhood installation folder")
 	if path.exists(str(ACBpath)+"/ACBSP.exe") == False:
@@ -132,7 +144,40 @@ def choosePath():
 			os.startfile("ACBSetupTool.py")
 			root.destroy()
 
-def switchState(mapName):
+def checkPathandStatus(gamePath): ######### Automatically searches for directory path and map status
+	if pathExist == True:
+		dirPath.set(gamePath)
+		acbFolder["state"] = tk.DISABLED
+		print("Directory found!")
+	elif pathExist == False:
+		with open(filename, "r") as info:
+			fileInfo = info.readlines()
+
+			try:
+				newPath = fileInfo[2].strip("\n")
+				if path.exists(str(newPath)+"/ACBSP.exe") == True:
+					gamePath = newPath
+					dirPath.set(gamePath)
+					acbFolder["state"] = tk.DISABLED
+			except:
+				messagebox.showinfo("No Directory Located", "No directory has been detected.\n\nClick on \"Set Directory\" and" +
+					" manually select your folder containing \"ACBSP.exe\".")
+				gamePath = ""
+				print("Directory not yet set")
+				applyChanges["state"] = tk.DISABLED
+
+############################################################################ Checks status of each map
+	global mapStatus
+	mapStatus = dict()
+	for place, local in maps.items():
+		value = path.exists(gamePath+"/multi/" + local)
+		if value == True:
+			mapStatus[place] = True
+		else:
+			mapStatus[place] = False
+############################################################################
+
+def switchState(mapName):   ################################################ Switches button state
 	global mapStatus
 	if mapName == "Alhambra":
 		if mapStatus[mapName] == True:
@@ -234,9 +279,8 @@ def switchState(mapName):
 	if gamePath == "":
 		unsavedChanges.set("No directory has been set.")
 
-def applyMapChanges():
-	#global mapStatus
-	#global maps
+def applyMapChanges():  ##### Applies the map changes by checking the difference between
+						##### the map's existance and the local variable with the user set status
 	changesMade = 0
 	for place, local in maps.items():
 		value = path.exists(gamePath+"/multi/" + local)
@@ -253,41 +297,13 @@ def applyMapChanges():
 		unsavedChanges.set("Your changes have been saved.")
 		changeLabel.config(foreground="green")
 
-def checkPathandStatus(gamePath):
-	if pathExist == True:
-		dirPath.set(gamePath)
-		acbFolder["state"] = tk.DISABLED
-		print("Directory found!")
-	elif pathExist == False:
-		with open(filename, "r") as info:
-			fileInfo = info.readlines()
-
-			try:
-				newPath = fileInfo[2].strip("\n")
-				if path.exists(str(newPath)+"/ACBSP.exe") == True:
-					gamePath = newPath
-					dirPath.set(gamePath)
-					acbFolder["state"] = tk.DISABLED
-			except:
-				gamePath = ""
-				print("Directory not yet set")
-				applyChanges["state"] = tk.DISABLED
-
-############################################################################ Checks status of each map
-	global mapStatus
-	mapStatus = dict()
-	for place, local in maps.items():
-		value = path.exists(gamePath+"/multi/" + local)
-		if value == True:
-			mapStatus[place] = True
-		else:
-			mapStatus[place] = False
-
-def launchGame(gamePath):
+def launchGame(gamePath):  ##### Launches the game
 	try:
+		user = ""
+		password = ""
 		startGame.config(state="disabled", text="Game running")
 		root.iconify()
-		subprocess.run([gamePath + "/ACBMP.exe", "/launchedfromotherexec"])
+		subprocess.run([gamePath + "/ACBMP.exe", "/launchedfromotherexec", "/onlineUser:"+user, "/onlinePassword:"+password])
 		root.deiconify()
 		startGame.config(state="active", text="Launch Multiplayer")
 	except:
@@ -299,6 +315,7 @@ def launchGame(gamePath):
 root = tk.Tk()
 root.title(_("Assassin's Creed: Brotherhood Setup Manager Tool"))
 root.minsize(width=800, height=300)
+root.maxsize(width=800, height=300)
 root.resizable(False, False)
 root.geometry("800x300+250+200")
 
@@ -456,7 +473,7 @@ startGame = tk.Button(frame2, text="Launch Multiplayer", bg="#38393F", font=mapF
 startGame.grid(row=3, column=1, columnspan=2, ipadx=10, pady=(15,0))
 
 checkPathandStatus(gamePath)
-print("\nGame path is: ", gamePath)
+#print("\nGame path is: ", gamePath)
 
 ###############################################################################
 
