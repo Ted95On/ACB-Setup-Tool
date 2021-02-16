@@ -285,9 +285,16 @@ def checkPathandStatus(gamePath):
 
 def launchGame(gamePath):
 	try:
+		startGame.config(state="disabled", text="Game running")
+		root.iconify()
 		subprocess.run([gamePath + "/ACBMP.exe", "/launchedfromotherexec"])
+		root.deiconify()
+		startGame.config(state="active", text="Launch Multiplayer")
 	except:
 		messagebox.showerror("Error Launching Game!", "Game not found.\n\nCheck your directory path.")
+		root.deiconify()
+		startGame.config(state="active", text="Launch Multiplayer")
+		
 
 root = tk.Tk()
 root.title(_("Assassin's Creed: Brotherhood Setup Manager Tool"))
@@ -320,16 +327,16 @@ mapBG = "#89b0b3" ##89b0b3 38393F
 b = ttk.Style()
 b.configure("lang.TRadiobutton", padx=50, font="Helvetica, 9", background="#89b0b3")
 
-logoLabel = tk.Label(root, image=biglogo, bg="#89b0b3")
+logoLabel = tk.Label(root, image=biglogo, height=300, bg="#89b0b3")
 logoLabel.pack(side="left")
 
-tabMain = ttk.Notebook(root, padding=3) 
+tabMain = ttk.Notebook(root, height=300, padding=3) 
 tabMain.pack(fill="both", expand=1)
 
 
 #frame1 = tk.Frame(tabMain, borderwidth=1, bg=mapBG)
 
-frame2 = tk.Frame(tabMain, bg=mapBG) 
+frame2 = tk.Frame(tabMain, bg=mapBG, height=300) 
 frame2.pack(fill="both", expand=1)
 frame2.grid_columnconfigure(0, weight=1)
 frame2.grid_columnconfigure(5, weight=1)
