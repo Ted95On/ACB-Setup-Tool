@@ -3,6 +3,7 @@ from os import path
 import tkinter as tk
 from tkinter import ttk, messagebox, font
 from tkinter.filedialog import askdirectory
+import subprocess
 
 import webbrowser
 import gettext
@@ -11,7 +12,7 @@ _ = gettext.gettext
 version = 0.1
 
 global gamePath
-gamePath = "C:/Program Files (x86)/Steam/steamapps/common/Assassins Creed Brotherhood" #default folder
+gamePath = "C:/Program Files (x86)/Steam/steamappS/common/Assassins Creed Brotherhood" #default folder
 pathExist = path.exists(gamePath+"/ACBSP.exe")
 if pathExist == False:
 	print("Can't find directory")
@@ -110,7 +111,7 @@ def openLangMenu():
 		newLang = v.get()
 		if newLang != getLang:
 			replace_line(filename, 1, newLang)
-			answer = messagebox.askyesno("", "The language has been changed.\nChanges will take effect upon restart.\n\n"
+			answer = messagebox.askyesno("Language modification", "The language has been changed.\nChanges will take effect upon restart.\n\n"
 																						"Do you wish to restart now?")
 			if answer == True:
 				os.startfile("ACBSetupTool.py")
@@ -252,8 +253,7 @@ def applyMapChanges():
 		unsavedChanges.set("Your changes have been saved.")
 		changeLabel.config(foreground="green")
 
-def checkPathandStatus():
-	global gamePath
+def checkPathandStatus(gamePath):
 	if pathExist == True:
 		dirPath.set(gamePath)
 		acbFolder["state"] = tk.DISABLED
@@ -271,9 +271,8 @@ def checkPathandStatus():
 			except:
 				gamePath = ""
 				print("Directory not yet set")
-				fixSH["state"] = tk.DISABLED
+				applyChanges["state"] = tk.DISABLED
 
-############################################################################
 ############################################################################ Checks status of each map
 	global mapStatus
 	mapStatus = dict()
@@ -284,6 +283,12 @@ def checkPathandStatus():
 		else:
 			mapStatus[place] = False
 
+def launchGame(gamePath):
+	try:
+		subprocess.run([gamePath + "/ACBMP.exe", "/launchedfromotherexec"])
+	except:
+		messagebox.showerror("Error Launching Game!", "Game not found.\n\nCheck your directory path.")
+
 root = tk.Tk()
 root.title(_("Assassin's Creed: Brotherhood Setup Manager Tool"))
 root.minsize(width=800, height=300)
@@ -292,8 +297,13 @@ root.geometry("800x300+250+200")
 
 logo = tk.PhotoImage(file = "images/icon.png")
 biglogo = tk.PhotoImage(file = "images/sidepanel.png")
-onIMG = tk.PhotoImage(file = "images/OnSwitch.png", master=root)
-offIMG = tk.PhotoImage(file = "images/OffSwitch.png", master=root)
+onIMG = tk.PhotoImage(file = "images/OnSwitch.png")
+offIMG = tk.PhotoImage(file = "images/OffSwitch.png")
+helle = tk.PhotoImage(file = "images/hellequin.png")
+fazz = tk.PhotoImage(file = "images/blacksmith.png")
+verify = tk.PhotoImage(file = "images/verify.png")
+jigaudi = tk.PhotoImage(file = "images/jigaudi.png")
+selectMaps = tk.PhotoImage(file = "images/selectmaps.png")
 root.iconphoto(False, logo)
 
 #main window frames
@@ -311,112 +321,134 @@ b = ttk.Style()
 b.configure("lang.TRadiobutton", padx=50, font="Helvetica, 9", background="#89b0b3")
 
 logoLabel = tk.Label(root, image=biglogo, bg="#89b0b3")
-logoLabel.pack(anchor="w",fill="y")
+logoLabel.pack(side="left")
 
-tabMain = ttk.Notebook(root, width=667, height=250, padding=2)#, 
-tabMain.place(x=125)
+tabMain = ttk.Notebook(root, padding=3) 
+tabMain.pack(fill="both", expand=1)
 
-frame2 = tk.Frame(tabMain, bg=mapBG)#, width=670, height=300, borderwidth=1, 
-frame2.grid(row=0, column=1)
-frame3 = tk.Frame(tabMain, borderwidth=1, bg=mapBG)#, width=670, height=300,
-frame3.grid(row=0, column=1)
 
+#frame1 = tk.Frame(tabMain, borderwidth=1, bg=mapBG)
+
+frame2 = tk.Frame(tabMain, bg=mapBG) 
+frame2.pack(fill="both", expand=1)
+frame2.grid_columnconfigure(0, weight=1)
+frame2.grid_columnconfigure(5, weight=1)
+
+#frame3 = tk.Frame(tabMain, borderwidth=1, bg=mapBG)
+#frame3.pack()
+
+#tabMain.add(frame1, text="   Home   ")
 tabMain.add(frame2, text="   Map Selection   ")
-tabMain.add(frame3, text="   Quick Bootup   ")
+#tabMain.add(frame3, text="   Quick Bootup   ")
 
-acbFolder = tk.Button(frame2, text="Set Directory Path", bg="#38393F", command=lambda: choosePath())
-acbFolder.pack(pady=10, ipadx=30)
+############################################################################## Images on Screen
+verIMG = tk.Label(frame2, bg=mapBG, image=verify)
+verIMG.place(x=10, y=3)
+fazzChar = tk.Label(frame2, bg=mapBG, image=fazz)
+fazzChar.place(x=420)
+selectIMG = tk.Label(frame2, image=selectMaps, bg=mapBG)
+selectIMG.place(x=589, y=95)
+dell = tk.Label(frame2, image=helle, bg=mapBG)
+dell.place(x=8, y=130)
+jigaudiChar = tk.Label(frame2, image=jigaudi, bg=mapBG)
+jigaudiChar.place(x=595, y=185)
+################################################################################################
 
-pathLabel = tk.Label(frame2, textvariable=dirPath, bg="#38393F", borderwidth=3, width=100, anchor="center", relief="sunken")
-pathLabel.pack(padx=20)
 
-########################################################################### Checks game path directory
+acbFolder = tk.Button(frame2, text="Set Directory Path", bg="#38393F", font=mapFonts, command=lambda: choosePath())
+acbFolder.grid(row=0, column=1, columnspan=4, pady=(8,0))
+
+pathLabel = tk.Entry(frame2, textvariable=dirPath, width=80, bg="#38393F", font=mapFonts, borderwidth=3, justify="center", relief="sunken", state="readonly")
+pathLabel.grid(row=1, column=1, columnspan=4, pady=(12,0))
+
+mapFrame = tk.Frame(frame2 ,borderwidth=1, bg=mapBG, relief="sunken")
+mapFrame.grid(row=2, column=1, columnspan=4, pady=(13,0))
 
 
-############################################################################
 
-
-mapFrame = tk.Frame(frame2, borderwidth=1, height=150, bg=mapBG, relief="sunken")
-mapFrame.pack(fill="both", pady=10, padx=10)
 
 #SanDon
 labelSanDon = tk.Label(mapFrame, text="San Donato", font=mapFonts, bg=mapBG)
-labelSanDon.grid(row=0, column=0, padx=30, pady=5)
+labelSanDon.grid(row=0, column=0, padx=(25,0))
 buttonSanDon = tk.Button(mapFrame, bg=mapBG, activebackground=mapBG, bd=0, image=onIMG, command=lambda: switchState("San Donato"))
 buttonSanDon.grid(row=0, column=1)
 
+
 #Castel
 labelCastel = tk.Label(mapFrame, text="Castel Gandolfo", font=mapFonts, bg=mapBG)
-labelCastel.grid(row=1, column=0)
+labelCastel.grid(row=1, column=0, pady=(5,0), padx=(25,0))
 buttonCastel = tk.Button(mapFrame, bg=mapBG, activebackground=mapBG, bd=0, image=onIMG, command=lambda: switchState("Castel Gandolfo"))
-buttonCastel.grid(row=1, column=1)
+buttonCastel.grid(row=1, column=1, pady=(5,0))
 
 #MSM
 labelMSM = tk.Label(mapFrame, text="Mont St-Michel", font=mapFonts, bg=mapBG)
-labelMSM.grid(row=2, column=0)
+labelMSM.grid(row=2, column=0, pady=(5,0), padx=(25,0))
 buttonMSM = tk.Button(mapFrame, bg=mapBG, activebackground=mapBG, bd=0, image=onIMG, command=lambda: switchState("Mont St-Michel"))
-buttonMSM.grid(row=2, column=1)
+buttonMSM.grid(row=2, column=1, pady=(5,0))
 
 
 #Monti
 labelMonteriggioni = tk.Label(mapFrame, text="Monteriggioni", font=mapFonts, bg=mapBG)
-labelMonteriggioni.grid(row=3, column=0)
+labelMonteriggioni.grid(row=3, column=0, pady=(5,0), padx=(25,0))
 buttonMonteriggioni = tk.Button(mapFrame, bg=mapBG, activebackground=mapBG, bd=0, image=onIMG, command=lambda: switchState("Monteriggioni"))
-buttonMonteriggioni.grid(row=3, column=1)
+buttonMonteriggioni.grid(row=3, column=1, pady=(5,0))
 
 
 #Alhambra
 labelAlhambra = tk.Label(mapFrame, text="Alhambra", font=mapFonts, bg=mapBG)
-labelAlhambra.grid(row=0, column=2, padx=25)
+labelAlhambra.grid(row=0, column=2, padx=(25,0))
 buttonAlhambra = tk.Button(mapFrame, bg=mapBG, activebackground=mapBG, bd=0, image=onIMG, command=lambda: switchState("Alhambra"))
 buttonAlhambra.grid(row=0, column=3)
 
 #Florence
 labelFlorence = tk.Label(mapFrame, text="Florence", font=mapFonts, bg=mapBG)
-labelFlorence.grid(row=1, column=2, pady=5)
+labelFlorence.grid(row=1, column=2, pady=(5,0), padx=(25,0))
 buttonFlorence = tk.Button(mapFrame, bg=mapBG, activebackground=mapBG, bd=0, image=onIMG, command=lambda: switchState("Florence"))
-buttonFlorence.grid(row=1, column=3)
+buttonFlorence.grid(row=1, column=3, pady=(5,0))
 
 #Pienza
 labelPienza = tk.Label(mapFrame, text="Pienza", font=mapFonts, bg=mapBG)
-labelPienza.grid(row=2, column=2, padx=10, pady=5)
+labelPienza.grid(row=2, column=2, pady=(5,0), padx=(25,0))
 buttonPienza = tk.Button(mapFrame, bg=mapBG, activebackground=mapBG, bd=0, image=onIMG, command=lambda: switchState("Pienza"))
-buttonPienza.grid(row=2, column=3)
+buttonPienza.grid(row=2, column=3, pady=(5,0))
 
 #Venice
 labelVenice = tk.Label(mapFrame, text="Venice", font=mapFonts, bg=mapBG)
-labelVenice.grid(row=3, column=2, padx=10, pady=5)
+labelVenice.grid(row=3, column=2, padx=(25,0))
 buttonVenice = tk.Button(mapFrame, bg=mapBG, activebackground=mapBG, bd=0, image=onIMG, command=lambda: switchState("Venice"))
 buttonVenice.grid(row=3, column=3)
 
 
 #Forli
 labelForli = tk.Label(mapFrame, text="Forli", font=mapFonts, bg=mapBG)
-labelForli.grid(row=0, column=4, padx=35)
+labelForli.grid(row=0, column=4, padx=(25,0))
 buttonForli = tk.Button(mapFrame, bg=mapBG, activebackground=mapBG, bd=0, image=onIMG, command=lambda: switchState("Forli"))
-buttonForli.grid(row=0, column=5)
+buttonForli.grid(row=0, column=5, padx=(0,30))
 
 #Siena
 labelSiena = tk.Label(mapFrame, text="Siena", font=mapFonts, bg=mapBG)
-labelSiena.grid(row=1, column=4, padx=10)
+labelSiena.grid(row=1, column=4, pady=(5,0), padx=(25,0))
 buttonSiena = tk.Button(mapFrame, bg=mapBG, activebackground=mapBG, bd=0, image=onIMG, command=lambda: switchState("Siena"))
-buttonSiena.grid(row=1, column=5)
+buttonSiena.grid(row=1, column=5, pady=(5,0), padx=(0,30))
 
 
 #Rome
 labelRome = tk.Label(mapFrame, text="Rome", font=mapFonts, bg=mapBG)
-labelRome.grid(row=2, column=4, padx=10, pady=5)
+labelRome.grid(row=2, column=4, pady=(5,0), padx=(25,0))
 buttonRome = tk.Button(mapFrame, bg=mapBG, activebackground=mapBG, bd=0, image=onIMG, command=lambda: switchState("Rome"))
-buttonRome.grid(row=2, column=5)
+buttonRome.grid(row=2, column=5, pady=(5,0), padx=(0,30))
 
 
 
 changeLabel = tk.Label(frame2, textvariable=unsavedChanges, bg=mapBG, font="Arial, 8 italic", foreground="red")
-changeLabel.place(x=490, y=218)
-fixSH = tk.Button(frame2, text="Apply Changes", bg="#38393F", command=lambda: applyMapChanges())
-fixSH.pack()
+changeLabel.place(x=425, y=208)
 
-checkPathandStatus()
+applyChanges = tk.Button(frame2, text="Apply Changes", bg="#38393F", font=mapFonts, activeforeground="green", command=lambda: applyMapChanges())
+applyChanges.grid(row=3, column=2, columnspan=2, ipadx=5, pady=(15,0))
+startGame = tk.Button(frame2, text="Launch Multiplayer", bg="#38393F", font=mapFonts, command=lambda: launchGame(gamePath))
+startGame.grid(row=3, column=1, columnspan=2, ipadx=10, pady=(15,0))
+
+checkPathandStatus(gamePath)
 print("\nGame path is: ", gamePath)
 
 ###############################################################################
@@ -461,8 +493,7 @@ settingsmenu = tk.Menu(bar_menu, tearoff=0)
 anmenu = tk.Menu(bar_menu, tearoff=0)
 bar_menu.add_cascade(menu=filemenu, label="File")
 bar_menu.add_cascade(menu=settingsmenu, label="Settings")
-bar_menu.add_cascade(menu=anmenu, label="Assassins Network")
-
+bar_menu.add_cascade(menu=anmenu, label="Assassins' Network")
 
 #file menu
 filemenu.add_command(label="Placeholder")
@@ -475,7 +506,6 @@ settingsmenu.add_command(label="Change Interface Language", command=lambda: open
 #AN menu
 anmenu.add_command(label="Website", command=lambda: webbrowser.open(ANwebsite))
 anmenu.add_command(label="Rulebook", command=lambda: webbrowser.open(ANrulebook))
-anmenu.add_command(label="Donate to Dellpit-san")
 
 root.config(menu=bar_menu)
 root.mainloop()
