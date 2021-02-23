@@ -1,9 +1,9 @@
 # Assassin's Creed Brotherhood Setup Tool
   
-Enable/Disable maps to load with the game, and pick different boot options.
+Enable/Disable maps, and pick different boot options.
 Choose between one of the accounts or play on your own. Challenge data for some of the accounts is included.
 
-Default Steam and Uplay/Ubisoft paths are automatically detected, otherwise manually set the directory path of your Assassin's Creed Brotherhood installation containining "ACBSP.exe".
+Default Steam and Uplay/Ubisoft Connect paths are automatically detected, otherwise manually set the directory path of your Assassin's Creed Brotherhood installation containining "ACBSP.exe".
 
 Once it's set you can disable maps, apply the changes and press launch.
 
