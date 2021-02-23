@@ -1,16 +1,12 @@
 # Assassin's Creed Brotherhood Setup Tool
   
-A tool to configure what maps to load with the game, and enable fast multiplayer bootup.
-More features might be added as dev work goes forward.
+Enable/Disable maps to load with the game, and pick different boot options.
+Choose between one of the accounts or play on your own. Challenge data for some of the accounts is included.
 
 Default Steam and Uplay/Ubisoft paths are automatically detected, otherwise manually set the directory path of your Assassin's Creed Brotherhood installation containining "ACBSP.exe".
 
 Once it's set you can disable maps, apply the changes and press launch.
 
-More features will be added soon.
+Default boot option when you first run the tool assumes the ACBSP/MP.exe files have not been renamed yet.
 
-
-TO DO:
-
-Settings: Apply several other options
-Account Management: Choose from a range of accounts to play on. Automatically logs you into the said once you hit "Play Multiplayer".
+If you have a Steam installation of ACB on a different directory than the default one (which most people don't so no worries), and wish to run the game with the Steam overlay, you'll have to change the path to Steam.exe on the "settings.ini" file in this tool and replace it with your path. (Currently set to "C:/Program Files (x86)/Steam/steam.exe").
