@@ -9,7 +9,7 @@ import shutil
 import webbrowser
 
 
-version = 1.0 # Complete base version
+version = "1.1.0"
 
 savefile = 'settings.ini'
 accountsfile = 'accData/accounts.csv'
@@ -175,37 +175,37 @@ def checkPathandStatus(): ######### Automatically searches for directory path an
 
 def mapStatusSet(): #### Sets the toggles on the maps according to their status
 
-	if mapStatus["Alhambra"] == True: buttonAlhambra.config(image=onIMG)
+	if mapStatus["Alhambra"]: buttonAlhambra.config(image=onIMG)
 	else: buttonAlhambra.config(image=offIMG)
 
-	if mapStatus["Florence"] == True: buttonFlorence.config(image=onIMG)
+	if mapStatus["Florence"]: buttonFlorence.config(image=onIMG)
 	else: buttonFlorence.config(image=offIMG)
 
-	if mapStatus["Forli"] == True: buttonForli.config(image=onIMG)
+	if mapStatus["Forli"]: buttonForli.config(image=onIMG)
 	else: buttonForli.config(image=offIMG)
 
-	if mapStatus["Pienza"] == True: buttonPienza.config(image=onIMG)
+	if mapStatus["Pienza"]: buttonPienza.config(image=onIMG)
 	else: buttonPienza.config(image=offIMG)
 
-	if mapStatus["Siena"] == True: buttonSiena.config(image=onIMG)
+	if mapStatus["Siena"]: buttonSiena.config(image=onIMG)
 	else: buttonSiena.config(image=offIMG)
 
-	if mapStatus["Castel Gandolfo"] == True: buttonCastel.config(image=onIMG)
+	if mapStatus["Castel Gandolfo"]: buttonCastel.config(image=onIMG)
 	else: buttonCastel.config(image=offIMG)
 
-	if mapStatus["Venice"] == True: buttonVenice.config(image=onIMG)
+	if mapStatus["Venice"]: buttonVenice.config(image=onIMG)
 	else: buttonVenice.config(image=offIMG)
 
-	if mapStatus["Monteriggioni"] == True: buttonMonteriggioni.config(image=onIMG)
+	if mapStatus["Monteriggioni"]: buttonMonteriggioni.config(image=onIMG)
 	else: buttonMonteriggioni.config(image=offIMG)
 
-	if mapStatus["Rome"] == True: buttonRome.config(image=onIMG)
+	if mapStatus["Rome"]: buttonRome.config(image=onIMG)
 	else: buttonRome.config(image=offIMG)
 
-	if mapStatus["San Donato"] == True: buttonSanDon.config(image=onIMG)
+	if mapStatus["San Donato"]: buttonSanDon.config(image=onIMG)
 	else: buttonSanDon.config(image=offIMG)
 
-	if mapStatus["Mont St-Michel"] == True: buttonMSM.config(image=onIMG)
+	if mapStatus["Mont St-Michel"]: buttonMSM.config(image=onIMG)
 	else: buttonMSM.config(image=offIMG)
 
 
@@ -213,7 +213,7 @@ def switchState(mapName):   ################################################ Swi
 
 	global mapStatus
 	if mapName == "Alhambra":
-		if mapStatus[mapName] == True:
+		if mapStatus[mapName]:
 			buttonAlhambra.config(image=offIMG)
 			mapStatus[mapName] = False
 		elif mapStatus[mapName] == False:
@@ -221,7 +221,7 @@ def switchState(mapName):   ################################################ Swi
 			mapStatus[mapName] = True
 
 	if mapName == "Florence":
-		if mapStatus[mapName] == True:
+		if mapStatus[mapName]:
 			buttonFlorence.config(image=offIMG)
 			mapStatus[mapName] = False
 		elif mapStatus[mapName] == False:
@@ -229,7 +229,7 @@ def switchState(mapName):   ################################################ Swi
 			mapStatus[mapName] = True
 
 	if mapName == "Forli":
-		if mapStatus[mapName] == True:
+		if mapStatus[mapName]:
 			buttonForli.config(image=offIMG)
 			mapStatus[mapName] = False
 		elif mapStatus[mapName] == False:
@@ -237,7 +237,7 @@ def switchState(mapName):   ################################################ Swi
 			mapStatus[mapName] = True
 
 	if mapName == "Mont St-Michel":
-		if mapStatus[mapName] == True:
+		if mapStatus[mapName]:
 			buttonMSM.config(image=offIMG)
 			mapStatus[mapName] = False
 		elif mapStatus[mapName] == False:
@@ -245,7 +245,7 @@ def switchState(mapName):   ################################################ Swi
 			mapStatus[mapName] = True
 
 	if mapName == "Castel Gandolfo":
-		if mapStatus[mapName] == True:
+		if mapStatus[mapName]:
 			buttonCastel.config(image=offIMG)
 			mapStatus[mapName] = False
 		elif mapStatus[mapName] == False:
@@ -253,7 +253,7 @@ def switchState(mapName):   ################################################ Swi
 			mapStatus[mapName] = True
 
 	if mapName == "Pienza":
-		if mapStatus[mapName] == True:
+		if mapStatus[mapName]:
 			buttonPienza.config(image=offIMG)
 			mapStatus[mapName] = False
 		elif mapStatus[mapName] == False:
@@ -261,7 +261,7 @@ def switchState(mapName):   ################################################ Swi
 			mapStatus[mapName] = True
 
 	if mapName == "San Donato":
-		if mapStatus[mapName] == True:
+		if mapStatus[mapName]:
 			buttonSanDon.config(image=offIMG)
 			mapStatus[mapName] = False
 		elif mapStatus[mapName] == False:
@@ -269,7 +269,7 @@ def switchState(mapName):   ################################################ Swi
 			mapStatus[mapName] = True
 
 	if mapName == "Venice":
-		if mapStatus[mapName] == True:
+		if mapStatus[mapName]:
 			buttonVenice.config(image=offIMG)
 			mapStatus[mapName] = False
 		elif mapStatus[mapName] == False:
@@ -277,7 +277,7 @@ def switchState(mapName):   ################################################ Swi
 			mapStatus[mapName] = True
 
 	if mapName == "Siena":
-		if mapStatus[mapName] == True:
+		if mapStatus[mapName]:
 			buttonSiena.config(image=offIMG)
 			mapStatus[mapName] = False
 		elif mapStatus[mapName] == False:
@@ -285,7 +285,7 @@ def switchState(mapName):   ################################################ Swi
 			mapStatus[mapName] = True
 
 	if mapName == "Monteriggioni":
-		if mapStatus[mapName] == True:
+		if mapStatus[mapName]:
 			buttonMonteriggioni.config(image=offIMG)
 			mapStatus[mapName] = False
 		elif mapStatus[mapName] == False:
@@ -293,7 +293,7 @@ def switchState(mapName):   ################################################ Swi
 			mapStatus[mapName] = True
 
 	if mapName == "Rome":
-		if mapStatus[mapName] == True:
+		if mapStatus[mapName]:
 			buttonRome.config(image=offIMG)
 			mapStatus[mapName] = False
 		elif mapStatus[mapName] == False:
@@ -317,6 +317,72 @@ def switchState(mapName):   ################################################ Swi
 
 	if gamePath == "":
 		unsavedChanges.set("No directory has been set.")
+
+def disableAll():  ### Disables all the maps
+
+	for m in maps:
+
+		if mapStatus[m]:
+			changesMade = True
+			mapStatus[m] = False
+
+			if " " not in m:
+				expression = "button" + m + ".config(image=offIMG)"
+				eval(expression)
+			elif m == "Mont St-Michel":
+				buttonMSM.config(image=offIMG)
+			elif m == "San Donato":
+				buttonSanDon.config(image=offIMG)
+			else:
+				buttonCastel.config(image=offIMG)
+
+	changesFound = 0
+	for place, local in maps.items():
+
+		value = path.exists(gamePath+"/multi/" + local)
+
+		if value != mapStatus[place]:
+			changesFound+=1
+
+	if changesFound != 0:
+		unsavedChanges.set("You have unsaved changes.")
+		changeLabel.config(foreground="red")
+	else:
+		unsavedChanges.set("All maps are already disabled!")
+		changeLabel.config(foreground="green")
+
+def enableAll():  ### Enables all the maps
+
+	for m in maps:
+		if mapStatus[m] == False:
+			changesMade = True
+			mapStatus[m] = True
+
+			if " " not in m:
+				expression = "button" + m + ".config(image=onIMG)"
+				eval(expression)
+			elif m == "Mont St-Michel":
+				buttonMSM.config(image=onIMG)
+			elif m == "San Donato":
+				buttonSanDon.config(image=onIMG)
+			else:
+				buttonCastel.config(image=onIMG)
+
+	changesFound = 0
+	for place, local in maps.items():
+
+		value = path.exists(gamePath+"/multi/" + local)
+
+		if value != mapStatus[place]:
+			changesFound+=1
+
+	if changesFound != 0:
+		unsavedChanges.set("You have unsaved changes.")
+		changeLabel.config(foreground="red")
+	else:
+		unsavedChanges.set("All maps are already enabled!")
+		changeLabel.config(foreground="green")
+
 
 def applyMapChanges():  ##### Applies the map changes by checking the difference between
 						##### the map's existance and the local variable with the user set status
@@ -482,6 +548,7 @@ def settings():		### Frame 3 Settings
 
 
 	def openGameDir():
+
 		if defaultpathExist:
 			os.startfile(default1)
 		elif default2pathExist:
@@ -528,12 +595,12 @@ def accountManagement():   ### Frame 4 Account Management
 	courtyprowlLab = tk.Label(frame4, image=courtyprowl, bg=mapBG)
 	courtyprowlLab.grid(row=1, column=5, padx=15)
 
-	count=1
-	for d in range(5):
+	count = 1
+	for y in range(5):
 		for x in range(3):
 			ttk.Radiobutton(accountsFrame, style="acc.TRadiobutton", 
       		  text=accounts[count][0], variable=a, value=count, takefocus=False,
-      		  command=lambda: selectAcc()).grid(row=d, column=x, padx=15, pady=5, sticky="w")
+      		  command=lambda: selectAcc()).grid(row=y, column=x, padx=15, pady=5, sticky="w")
 			count+=1
 
 	pickYourOwn = tk.Label(frame4, bg=mapBG, image=ownAccount)
@@ -712,8 +779,8 @@ try:
 	fazz = tk.PhotoImage(file = "images/blacksmith.png")
 	verify = tk.PhotoImage(file = "images/verify.png")
 	jigaudi = tk.PhotoImage(file = "images/jigaudi.png")
-	courty = tk.PhotoImage(file = "images/courty.png")
-	fouadIMG = tk.PhotoImage(file = "images/fouad.png")
+	millia = tk.PhotoImage(file = "images/courty.png")
+	damaIMG = tk.PhotoImage(file = "images/dama.png")
 	selectMaps = tk.PhotoImage(file = "images/selectmaps.png")
 	tabHome = tk.PhotoImage(file = "images/tabHome.png")
 	tabMap = tk.PhotoImage(file = "images/tabMap.png")
@@ -725,6 +792,8 @@ try:
 	ownAccount = tk.PhotoImage(file = "images/ownaccount.png")
 	marqfoot = tk.PhotoImage(file = "images/marqfoot.png")
 	courtyprowl = tk.PhotoImage(file = "images/courtyprowl.png")
+	allOn = tk.PhotoImage(file = "images/allOn.png")
+	allOff = tk.PhotoImage(file = "images/allOff.png")
 	root.iconbitmap("images/favicon.ico")
 	#root.iconphoto(False, logo)
 
@@ -823,10 +892,10 @@ verIMG = tk.Label(frame2, bg=mapBG, image=verify)
 verIMG.grid(row=1,column=1, columnspan=2, padx=(10,0))
 fazzChar = tk.Label(frame2, bg=mapBG, image=fazz)
 fazzChar.grid(row=1, column=4, padx=(0,125))
-fouad = tk.Label(frame2, bg=mapBG, image=fouadIMG)
-fouad.grid(row=2, column=5)
-courtyChar = tk.Label(frame2, bg=mapBG, image=courty)
-courtyChar.grid(row=2, column=1)
+dama = tk.Label(frame2, bg=mapBG, image=damaIMG)
+dama.grid(row=2, column=5)
+milliaChar = tk.Label(frame2, bg=mapBG, image=millia)
+milliaChar.grid(row=2, column=1)
 selectIMG = tk.Label(frame2, image=selectMaps, bg=mapBG)
 selectIMG.grid(row=4, rowspan=2, column=5, padx=(0,10), pady=(0,25))
 dripdell = tk.Label(frame2, image=engihelle, bg=mapBG)
@@ -916,6 +985,17 @@ labelRome.grid(row=2, column=4, pady=(5,0), padx=(25,0))
 buttonRome = tk.Button(mapFrame, bg=insideBG, activebackground=insideBG, bd=0, image=onIMG, command=lambda: switchState("Rome"))
 buttonRome.grid(row=2, column=5, pady=(5,0), padx=(0,30))
 
+bBG = "#808080"
+buttonFrame = tk.Frame(mapFrame, borderwidth=2, bg=bBG, relief="sunken", width=300)
+buttonFrame.grid(row=3, rowspan=1, column=4, columnspan=2)
+
+allOff.image = allOff
+allOff = tk.Button(buttonFrame, bg=bBG, activebackground=bBG, bd=0, image=allOff, command=lambda: disableAll())
+allOff.grid(row=0, column=0, ipady=1, ipadx=5)
+
+allOn.image = allOn
+allOn = tk.Button(buttonFrame, bg=bBG, activebackground=bBG, bd=0, image=allOn, command=lambda: enableAll())
+allOn.grid(row=0, column=1, ipadx=5)
 
 changeLabel = tk.Label(frame2, textvariable=unsavedChanges, bg=mapBG, font="Arial, 8 italic", foreground="red")
 changeLabel.grid(row=6, column=2)
